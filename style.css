@@ -3,15 +3,19 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden; /* Prevent scrolling */
-  background: #000; /* entire page is black (was giving me issue)*/
+  /* background: #000; entire page is black (was giving me issue) */
+  /* background-image: url(assets/big_space.jpg); */
 }
 
 #background {
   position: absolute;
   width: 4000px;
-  height: 100vh; /* Full viewport */
-  background: #000; /* Plain black background (was giving me issue)*/
+  height: 300vh; /* Full viewport */
+  /* background: #000; Plain black background (was giving me issue) */
   overflow: visible;
+  background-image: url(assets/spacey.webp);
+  background-size: 20%;
+  background-repeat: repeat;
 }
 
 #info-box {
