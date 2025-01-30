@@ -1,51 +1,47 @@
-/* Body and HTML to ensure full height and no overflow */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden; /* Prevent scrolling */
-  background: #000; /* Ensure the entire page is black */
+  background: #000; /* entire page is black (was giving me issue)*/
 }
 
-/* Background */
 #background {
   position: absolute;
-  width: 4000px; /* Extended width for more content */
-  height: 100vh; /* Full viewport height */
-  background: #000; /* Plain black background */
-  overflow: visible; /* Allow content to overflow */
+  width: 4000px;
+  height: 100vh; /* Full viewport */
+  background: #000; /* Plain black background (was giving me issue)*/
+  overflow: visible;
 }
 
 #info-box {
   position: absolute;
-  top: 860px; /* Same Y position as spaceship */
-  left: 150px; /* Slightly to the right of the spaceship */
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  padding-left: 100px; /* Added space for spaceship */
-  padding-top: 15px; /* Space for text at the top */
-  padding-right: 15px; /* Right padding for some space */
-  padding-bottom: 15px; /* Bottom padding for some space */
+  top: 860px;
+  left: 150px;
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent */
+  padding-left: 100px; /* added space for spaceship */
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
   border-radius: 10px;
   font-size: 16px;
   font-family: Arial, sans-serif;
-  color: #333; /* Dark text for contrast */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow for readability */
-  max-width: 300px; /* Limit width of the text box */
-  z-index: 20; /* Ensure it's above other content */
+  color: #333; /* text */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow*/
+  max-width: 300px;
+  z-index: 20;
 }
 
-/* Spaceship */
 #spaceship {
   position: absolute;
   width: 46px;
   height: 78.3px;
   background: url('assets/spaceship.png') no-repeat center center;
   background-size: contain;
-  z-index: 100; /* Ensure it's above everything */
-  transform: translate(-50%, -50%); /* Center the spaceship */
+  z-index: 100; /* above everything */
+  transform: translate(-50%, -50%);
 }
 
-/* Minimap */
 #minimap {
   position: fixed;
   top: 10px;
@@ -54,7 +50,7 @@ html, body {
   height: 100px;
   border: 2px solid white;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 50; /* Ensure it's above the background but below the spaceship */
+  z-index: 50; /* above the background below the spaceship */
 }
 
 #map-indicator {
@@ -72,12 +68,12 @@ html, body {
   justify-content: center;
   align-items: center;
   transition: transform 0.5s ease;
-  z-index: 10; /* Ensure clusters are above the background */
+  z-index: 10; /* clusters are above the background */
 }
 
-/* Cluster images - retain original sizes but allow them to scale */
+/* retain original sizes but allow them to scale */
 .cluster img {
-  max-width: 200px; /* Allow images to be larger */
+  max-width: 200px;
   max-height: 200px;
   transition: transform 0.5s ease;
   position: absolute;
@@ -92,20 +88,18 @@ html, body {
 .cluster img:nth-child(7) { --x: -250px; --y: 0px; transform: translate(-200px, 0); }
 .cluster img:nth-child(8) { --x: -200px; --y: -150px; transform: translate(-150px, -125px); }
 
-/* Cluster text */
 .cluster-text {
   position: absolute;
   color: white;
-  font-size: 18px; /* Slightly larger text */
+  font-size: 18px;
   font-weight: bold;
   opacity: 0;
   transition: opacity 0.5s ease;
   width: 300px;
   text-align: center;
-  z-index: 20; /* Ensure text is above images */
+  z-index: 20; 
 }
 
-/* Cluster animation when spaceship is near */
 .cluster.active img {
   transform: scale(1.5) translate(var(--x), var(--y));
 }

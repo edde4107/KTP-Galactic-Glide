@@ -33,30 +33,29 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-// Detect Enter key for cluster interaction (optional)
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    // Add any interaction logic here if needed
-  }
-});
+// document.addEventListener("keydown", (event) => {
+//   if (event.key === "Enter") {
+//     // add interaction??
+//   }
+// });
 
 function checkClusters() {
   const clusters = document.querySelectorAll('.cluster');
 
   clusters.forEach((cluster) => {
-    // Get the cluster's position relative to the #background element
+    // cluster position relative to background
     const clusterRect = cluster.getBoundingClientRect();
     const backgroundRect = background.getBoundingClientRect();
 
-    // Calculate the cluster's center position relative to the #background
+    // cluster center relative to background
     const clusterX = clusterRect.left - backgroundRect.left + clusterRect.width / 2;
     const clusterY = clusterRect.top - backgroundRect.top + clusterRect.height / 2;
 
-    // Calculate distance between spaceship and cluster center
+    // distance between spaceship and cluster center
     const distance = Math.sqrt((posX - clusterX) ** 2 + (posY - clusterY) ** 2);
 
-    // If spaceship is near the cluster, activate it
-    if (distance < 300) { // Increased collision box size
+    // if spaceship near cluster -> activate cluster
+    if (distance < 350) {
       cluster.classList.add('active');
     } else {
       cluster.classList.remove('active');
@@ -65,17 +64,16 @@ function checkClusters() {
 }
 
 function update() {
-  // Rotation logic
+  //rotation
   if (keys.ArrowLeft) angle -= 3;
   if (keys.ArrowRight) angle += 3;
 
-  // Thrust logic
+  // thrust logic (me & yo mom)
   if (keys.ArrowUp) {
     const radians = (angle * Math.PI) / 180;
     velocityX += Math.cos(radians) * acceleration;
     velocityY += Math.sin(radians) * acceleration;
 
-    // Cap the speed
     const speed = Math.sqrt(velocityX ** 2 + velocityY ** 2);
     if (speed > maxSpeed) {
       velocityX *= maxSpeed / speed;
@@ -83,47 +81,50 @@ function update() {
     }
   }
 
-  // Apply friction when no keys are pressed
+  // friction when no keys are pressed
+  // originally it was 0 gravity but I had my manager test it and it made more sense for the user if the ship stops
   if (!keys.ArrowUp && !keys.ArrowDown) {
     velocityX *= 1 - deceleration;
     velocityY *= 1 - deceleration;
   }
 
   // Deceleration (brake) logic
+  // (consider changing this to let it move in reverse)
   if (keys.ArrowDown) {
     velocityX *= 1 - deceleration;
     velocityY *= 1 - deceleration;
   }
 
-  // Update spaceship position
+  // spaceship position
   posX += velocityX;
   posY += velocityY;
 
   // Constrain spaceship within the background
-  posX = Math.max(0, Math.min(4000, posX)); // Adjusted for new background width
+  // note from elle (maybe make the ship blow up if it collides with an edge)
+  posX = Math.max(0, Math.min(4000, posX));
   posY = Math.max(0, Math.min(1746, posY));
 
-  // Update spaceship position in the DOM
+  // update ship position
   spaceship.style.left = `${posX}px`;
   spaceship.style.top = `${posY}px`;
   spaceship.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
 
-  // Scroll background to follow spaceship
+  // Scroll background to follow spaceship 
+  // rn the background is just black so we gonna have to figure out something better
   const viewportX = Math.max(0, Math.min(posX - window.innerWidth / 2, 4000 - window.innerWidth));
   const viewportY = Math.max(0, Math.min(posY - window.innerHeight / 2, 1746 - window.innerHeight));
   background.style.transform = `translate(${-viewportX}px, ${-viewportY}px)`;
 
-  // Update minimap
-  const mapScaleX = 200 / 4000; // Adjusted for new background width
+  // update minimap
+  const mapScaleX = 200 / 4000;
   const mapScaleY = 100 / 1746;
   mapIndicator.style.left = `${posX * mapScaleX}px`;
   mapIndicator.style.top = `${posY * mapScaleY}px`;
 
-  // Check for clusters and animate them
+  // check for clusters and animate if needed
   checkClusters();
 
   requestAnimationFrame(update);
 }
 
-// Start the game loop
 update();
