@@ -1,6 +1,7 @@
 const spaceship = document.getElementById("spaceship");
 const background = document.getElementById("background");
 const mapIndicator = document.getElementById("map-indicator");
+const smokeContainer = document.getElementById("smoke-container");
 
 let posX = 200;
 let posY = 920;
@@ -33,11 +34,28 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
-// document.addEventListener("keydown", (event) => {
-//   if (event.key === "Enter") {
-//     // add interaction??
-//   }
-// });
+// Function to create smoke particles
+function createSmoke() {
+  if (keys.ArrowUp) {
+    const smoke = document.createElement("div");
+    smoke.classList.add("smoke-particle");
+
+    // Position the smoke particle at the back of the spaceship
+    const radians = (angle * Math.PI) / 180;
+    const offsetX = Math.cos(radians) * -30; // Adjust the offset as needed
+    const offsetY = Math.sin(radians) * -30; // Adjust the offset as needed
+
+    smoke.style.left = `${posX + offsetX}px`;
+    smoke.style.top = `${posY + offsetY}px`;
+
+    smokeContainer.appendChild(smoke);
+
+    // Remove the smoke particle after the animation ends
+    smoke.addEventListener("animationend", () => {
+      smoke.remove();
+    });
+  }
+}
 
 function checkClusters() {
   const clusters = document.querySelectorAll('.cluster');
@@ -62,6 +80,8 @@ function checkClusters() {
     }
   });
 }
+
+let smokeCounter = 0;
 
 function update() {
   //rotation
@@ -88,11 +108,17 @@ function update() {
     velocityY *= 1 - deceleration;
   }
 
-  // Deceleration (brake) logic
-  // (consider changing this to let it move in reverse)
+  // reverse thrust logic
   if (keys.ArrowDown) {
-    velocityX *= 1 - deceleration;
-    velocityY *= 1 - deceleration;
+    const radians = (angle * Math.PI) / 180;
+    velocityX -= Math.cos(radians) * acceleration; // Reverse direction
+    velocityY -= Math.sin(radians) * acceleration; // Reverse direction
+
+    const speed = Math.sqrt(velocityX ** 2 + velocityY ** 2);
+    if (speed > maxSpeed) {
+      velocityX *= maxSpeed / speed;
+      velocityY *= maxSpeed / speed;
+    }
   }
 
   // spaceship position
@@ -100,7 +126,6 @@ function update() {
   posY += velocityY;
 
   // Constrain spaceship within the background
-  // note from elle (maybe make the ship blow up if it collides with an edge)
   posX = Math.max(0, Math.min(4000, posX));
   posY = Math.max(0, Math.min(1746, posY));
 
@@ -109,8 +134,7 @@ function update() {
   spaceship.style.top = `${posY}px`;
   spaceship.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
 
-  // Scroll background to follow spaceship 
-  // rn the background is just black so we gonna have to figure out something better
+  // Scroll background to follow spaceship
   const viewportX = Math.max(0, Math.min(posX - window.innerWidth / 2, 4000 - window.innerWidth));
   const viewportY = Math.max(0, Math.min(posY - window.innerHeight / 2, 1746 - window.innerHeight));
   background.style.transform = `translate(${-viewportX}px, ${-viewportY}px)`;
@@ -123,6 +147,12 @@ function update() {
 
   // check for clusters and animate if needed
   checkClusters();
+
+  // Generate smoke particles every 5 frames when moving forward
+  if (keys.ArrowUp && smokeCounter % 5 === 0) {
+    createSmoke();
+  }
+  smokeCounter++;
 
   requestAnimationFrame(update);
 }
