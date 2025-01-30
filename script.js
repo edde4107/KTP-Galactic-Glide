@@ -3,7 +3,7 @@ const background = document.getElementById("background");
 const mapIndicator = document.getElementById("map-indicator");
 const smokeContainer = document.getElementById("smoke-container");
 
-let posX = 200;
+let posX = 230;
 let posY = 920;
 let velocityX = 0;
 let velocityY = 0;
@@ -73,7 +73,7 @@ function checkClusters() {
     const distance = Math.sqrt((posX - clusterX) ** 2 + (posY - clusterY) ** 2);
 
     // if spaceship near cluster -> activate cluster
-    if (distance < 350) {
+    if (distance < 400) {
       cluster.classList.add('active');
     } else {
       cluster.classList.remove('active');

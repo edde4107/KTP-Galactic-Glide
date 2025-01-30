@@ -19,10 +19,7 @@ html, body {
   top: 860px;
   left: 150px;
   background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent */
-  padding-left: 100px; /* added space for spaceship */
-  padding-top: 15px;
-  padding-right: 15px;
-  padding-bottom: 15px;
+  padding: 15px; /* Adjust padding as needed */
   border-radius: 10px;
   font-size: 16px;
   font-family: Arial, sans-serif;
@@ -30,6 +27,18 @@ html, body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Slight shadow*/
   max-width: 300px;
   z-index: 20;
+  display: flex; /* Use Flexbox for horizontal alignment */
+  align-items: center; /* Center items vertically */
+}
+
+#launchpad-image {
+  width: 100px; /* Adjust size as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 10px; /* Space between image and text */
+}
+
+#info-box p {
+  margin: 0; /* Remove default paragraph margin */
 }
 
 #spaceship {
